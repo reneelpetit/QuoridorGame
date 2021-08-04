@@ -5,7 +5,89 @@
 class QuoridorGame():
     def __init__(self):
         """* `init` method that initializes the board with the fences (four edges) and pawns (P1 and P2) placed in the correct positions. """
-        return
+        self._board = {
+            (0,0): [],
+            (0,1): [],
+            (0,2): [],
+            (0,3): [],
+            (0,4): [],
+            (0,5): [],
+            (0,6): [],
+            (0,7): [],
+            (0,8): [],
+            (1,0): [],
+            (1,1): [],
+            (1,2): [],
+            (1,3): [],
+            (1,4): [],
+            (1,5): [],
+            (1,6): [],
+            (1,7): [],
+            (1,8): [],
+            (2,0): [],
+            (2,1): [],
+            (2,2): [],
+            (2,3): [],
+            (2,4): [],
+            (2,5): [],
+            (2,6): [],
+            (2,7): [],
+            (2,8): [],
+            (3,0): [],
+            (3,1): [],
+            (3,2): [],
+            (3,3): [],
+            (3,4): [],
+            (3,5): [],
+            (3,6): [],
+            (3,7): [],
+            (3,8): [],
+            (4,0): ["1"],
+            (4,1): [],
+            (4,2): [],
+            (4,3): [],
+            (4,4): [],
+            (4,5): [],
+            (4,6): [],
+            (4,7): [],
+            (4,8): ["2"],
+            (5,0): [],
+            (5,1): [],
+            (5,2): [],
+            (5,3): [],
+            (5,4): [],
+            (5,5): [],
+            (5,6): [],
+            (5,7): [],
+            (5,8): [],
+            (6,0): [],
+            (6,1): [],
+            (6,2): [],
+            (6,3): [],
+            (6,4): [],
+            (6,5): [],
+            (6,6): [],
+            (6,7): [],
+            (6,8): [],
+            (7,0): [],
+            (7,1): [],
+            (7,2): [],
+            (7,3): [],
+            (7,4): [],
+            (7,5): [],
+            (7,6): [],
+            (7,7): [],
+            (7,8): [],
+            (8,0): [],
+            (8,1): [],
+            (8,2): [],
+            (8,3): [],
+            (8,4): [],
+            (8,5): [],
+            (8,6): [],
+            (8,7): [],
+            (8,8): []
+                }
 
     def move_pawn(self):
         """* `move_pawn` method takes following two parameters in order: an integer that represents which player (1 or 2) is making the move and a tuple with the coordinates of where the pawn is going to be moved to.
@@ -28,4 +110,23 @@ class QuoridorGame():
     
     def print_board(self):
         """* You might also find implementing a `print_board` method useful to print the board to the screen. It's not required that you implement this method. """
-        return
+        print(self._board[(0,0)], self._board[(1,0)], self._board[(2,0)], self._board[(3,0)], self._board[(4,0)], self._board[(5,0)], self._board[(6,0)], self._board[(7,0)], self._board[(8,0)])
+        print(self._board[(0,1)], self._board[(1,1)], self._board[(2,1)], self._board[(3,1)], self._board[(4,1)], self._board[(5,1)], self._board[(6,1)], self._board[(7,1)], self._board[(8,1)])
+        print(self._board[(0,2)], self._board[(1,2)], self._board[(2,2)], self._board[(3,2)], self._board[(4,2)], self._board[(5,2)], self._board[(6,2)], self._board[(7,2)], self._board[(8,2)])
+        print(self._board[(0,3)], self._board[(1,3)], self._board[(2,3)], self._board[(3,3)], self._board[(4,3)], self._board[(5,3)], self._board[(6,3)], self._board[(7,3)], self._board[(8,3)])
+        print(self._board[(0,4)], self._board[(1,4)], self._board[(2,4)], self._board[(3,4)], self._board[(4,4)], self._board[(5,4)], self._board[(6,4)], self._board[(7,4)], self._board[(8,4)])
+        print(self._board[(0,5)], self._board[(1,5)], self._board[(2,5)], self._board[(3,5)], self._board[(4,5)], self._board[(5,5)], self._board[(6,5)], self._board[(7,5)], self._board[(8,5)])
+        print(self._board[(0,6)], self._board[(1,6)], self._board[(2,6)], self._board[(3,6)], self._board[(4,6)], self._board[(5,6)], self._board[(6,6)], self._board[(7,6)], self._board[(8,6)])
+        print(self._board[(0,7)], self._board[(1,7)], self._board[(2,7)], self._board[(3,7)], self._board[(4,7)], self._board[(5,7)], self._board[(6,7)], self._board[(7,7)], self._board[(8,7)])
+        print(self._board[(0,8)], self._board[(1,8)], self._board[(2,8)], self._board[(3,8)], self._board[(4,8)], self._board[(5,8)], self._board[(6,8)], self._board[(7,8)], self._board[(8,8)])
+
+game = QuoridorGame()
+game.print_board()
+"""     current_pawn = (0,0)
+    board[(current_pawn)]
+    board[(0,1)] = ['fence']
+    print('0,1: ')
+    print(board[(0,1)])
+    print(board[(coord)])
+
+func(2, (0,1)) """
