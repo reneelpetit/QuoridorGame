@@ -116,7 +116,8 @@ class QuoridorGame():
         #if player tries to move to space they cannot move to,
             #return false
         #if player tries to move to a square that already has a pawn,
-        if 1 or 2 in self._board.get(move_coord):
+        if 1 in self._board.get(move_coord) or 2 in self._board.get(move_coord):
+            print("yes")
             #if there is no fence,
             if 'h' in self._board.get(move_coord):
                 pass
@@ -133,23 +134,26 @@ class QuoridorGame():
             - If the fence can be placed, return `True`.
             - If it breaks the fair-play rule (and if you are doing the extra credit part), return exactly the string `breaks the fair play rule`.
             - If the game has been already won, return `False`"""
-            #check that no one has won by calling is_winner
-                #if True,
-                    #return False
-            #check that pawn has fences left to use
-                #if yes,
-                    #check that the fence coordinates are not out of bounds
-                        #if yes,
-                            #return False
-                    #check that there isn't already a fence
-                        #if yes, 
-                            #return False
-                    #else find the key that matches the coord_to_place_fence
-                        #add the fence details to the values in the matching key
+        #check that no one has won by calling is_winner
+        if self.is_winner(pawn):
+            #if True,return False
+            return False
+        #check that pawn has fences left to use
+            #if yes,
+                #check that the fence coordinates are not out of bounds
+                    #if yes,
+                        #return False
+                #check that there isn't already a fence
+                    #if yes, 
+                        #return False
+                #else find the key that matches the coord_to_place_fence
+                    #add the fence details to the values in the matching key
         pass
     
     def is_winner(self, pawn):
         """* `is_winner` method that takes a single integer representing the player number as a parameter and returns `True` if that player has won and `False` if that player has not won."""
+        #find the current location of pawn by calling current_location
+        start_coords = self.current_location(pawn)
         #if pawn1 is on the y coordinate 8
             #pawn1 wins, return true
         #if pawn2 is on y coordinate 0
@@ -171,7 +175,7 @@ class QuoridorGame():
 
 game = QuoridorGame()
 game.print_board()
-game.move_pawn(1, (4,1))
+game.move_pawn(1, (4,8))
 """     current_pawn = (0,0)
     board[(current_pawn)]
     board[(0,1)] = ['fence']
