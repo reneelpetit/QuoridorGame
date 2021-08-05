@@ -42,7 +42,7 @@ class QuoridorGame():
             (3,6): [],
             (3,7): [],
             (3,8): [],
-            (4,0): ["1"],
+            (4,0): [1],
             (4,1): [],
             (4,2): [],
             (4,3): [],
@@ -50,7 +50,7 @@ class QuoridorGame():
             (4,5): [],
             (4,6): [],
             (4,7): [],
-            (4,8): ["2"],
+            (4,8): [2],
             (5,0): [],
             (5,1): [],
             (5,2): [],
@@ -89,12 +89,16 @@ class QuoridorGame():
             (8,8): []
                 }
 
-    def move_pawn(self, pawn, coord):
+    def move_pawn(self, pawn, move_coord):
         """* `move_pawn` method takes following two parameters in order: an integer that represents which player (1 or 2) is making the move and a tuple with the coordinates of where the pawn is going to be moved to.
             - if the move is forbidden by the rule or blocked by the fence, return `False`
             - if the move was successful or if the move makes the player win, return `True`
             - if the game has been already won, return `False`"""
-        current_pawn = pawn
+        print(pawn, move_coord)
+        for key, value in self._board.items():
+            if pawn in value:
+                start_coord = key
+                print(start_coord)
         #if player tries to move over a fence, 
             #return false
         #if player tries to move off the board, 
@@ -102,6 +106,8 @@ class QuoridorGame():
         #if player tries to move to space they cannot move to,
             #return false
         #if player tries to move to a square that already has a pawn,
+        if 1 or 2 in self._board.get(move_coord):
+            return
             #if there is no fence,
                 #pawn jumps over that space to the next one
                 #else move diagnol
