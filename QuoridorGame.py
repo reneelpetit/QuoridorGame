@@ -88,17 +88,27 @@ class QuoridorGame():
             (8,7): [],
             (8,8): []
                 }
+    
+    def current_location(self, pawn):
+        #method to return the current location of a pawn
+        for key, value in self._board.items():
+            #find where the pawn is on the board 
+            if pawn in value:
+                #Get the key & store key in start_coord
+                start_coord = key
+                return start_coord
 
     def move_pawn(self, pawn, move_coord):
         """* `move_pawn` method takes following two parameters in order: an integer that represents which player (1 or 2) is making the move and a tuple with the coordinates of where the pawn is going to be moved to.
             - if the move is forbidden by the rule or blocked by the fence, return `False`
             - if the move was successful or if the move makes the player win, return `True`
             - if the game has been already won, return `False`"""
-        print(pawn, move_coord)
-        for key, value in self._board.items():
-            if pawn in value:
-                start_coord = key
-                print(start_coord)
+        #check if game is already won by calling is_winner()
+        if self.is_winner(pawn):
+            #if True,return False
+            return False
+        #find the starting coordinates of the pawn by calling current_location and storing key in start_coord
+        start_coord = self.current_location(pawn)
         #if player tries to move over a fence, 
             #return false
         #if player tries to move off the board, 
@@ -107,8 +117,9 @@ class QuoridorGame():
             #return false
         #if player tries to move to a square that already has a pawn,
         if 1 or 2 in self._board.get(move_coord):
-            return
             #if there is no fence,
+            if 'h' in self._board.get(move_coord):
+                pass
                 #pawn jumps over that space to the next one
                 #else move diagnol
         #if player tries to move to a square they can move to,
@@ -116,21 +127,35 @@ class QuoridorGame():
             #set that location to empty
             #move pawn to coordinates given
 
-    def place_fence(self, pawn, direction, coord):
+    def place_fence(self, pawn, direction_of_fence, coord_to_place_fence):
         """* `place_fence` method takes following parameters in order: an integer that represents which player (1 or 2) is making the move, a letter indicating whether it is vertical (v) or horizontal (h) fence, a tuple of integers that represents the position on which the fence is to be placed.   
             - if player has no fence left, or if the fence is out of the boundaries of the board, or if there is already a fence there and the new fence will overlap or intersect with the existing fence, return `False`. 
             - If the fence can be placed, return `True`.
             - If it breaks the fair-play rule (and if you are doing the extra credit part), return exactly the string `breaks the fair play rule`.
             - If the game has been already won, return `False`"""
-        return
+            #check that no one has won by calling is_winner
+                #if True,
+                    #return False
+            #check that pawn has fences left to use
+                #if yes,
+                    #check that the fence coordinates are not out of bounds
+                        #if yes,
+                            #return False
+                    #check that there isn't already a fence
+                        #if yes, 
+                            #return False
+                    #else find the key that matches the coord_to_place_fence
+                        #add the fence details to the values in the matching key
+        pass
     
-    def is_winnter(self, pawn):
+    def is_winner(self, pawn):
         """* `is_winner` method that takes a single integer representing the player number as a parameter and returns `True` if that player has won and `False` if that player has not won."""
         #if pawn1 is on the y coordinate 8
             #pawn1 wins, return true
         #if pawn2 is on y coordinate 0
             #pawn2 wins, return true
         #else return false
+        pass
     
     def print_board(self):
         """* You might also find implementing a `print_board` method useful to print the board to the screen. It's not required that you implement this method. """
@@ -146,7 +171,7 @@ class QuoridorGame():
 
 game = QuoridorGame()
 game.print_board()
-game.move_pawn(1, (4,0))
+game.move_pawn(1, (4,1))
 """     current_pawn = (0,0)
     board[(current_pawn)]
     board[(0,1)] = ['fence']
