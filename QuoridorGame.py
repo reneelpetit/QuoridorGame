@@ -99,6 +99,14 @@ class QuoridorGame():
                 print("start_coord in current location: ", start_coord)
                 return start_coord
     
+    def set_location(self, pawn, move_coord):
+        for key, value in self._board.items():
+            #find the key 
+            if move_coord == key:
+                #add the pawn to the value of that key
+                #TO DO: don't delete any fences that are there!!!
+                self._board.update({key: pawn})
+    
     def get_difference_between_coords(self, pawn, current_location, move_location):
         #method to check the difference between current location and move location
         pass
@@ -196,11 +204,3 @@ game = QuoridorGame()
 game.print_board()
 game.move_pawn(1, (4,8))
 game.is_winner(1)
-"""     current_pawn = (0,0)
-    board[(current_pawn)]
-    board[(0,1)] = ['fence']
-    print('0,1: ')
-    print(board[(0,1)])
-    print(board[(coord)])
-
-func(2, (0,1)) """
