@@ -111,13 +111,15 @@ class QuoridorGame():
         #find the starting coordinates of the pawn by calling current_location and storing key in start_coord
         start_coord = self.current_location(pawn)
         print("move pawn start coord: ", start_coord)
-        #if player tries to move over a fence, 
+        #TO DO: if player tries to move over a fence, 
             #return false
-        #if player tries to move off the board, 
+        if move_coord[0] < 0 or move_coord[0] > 8 or move_coord[1] < 0 or move_coord[1] > 8:
+            #if player tries to move off the board, 
             #return false
-        #if player tries to move to space they cannot move to,
+            return False
+        #TO DO: if player tries to move to space they cannot move to,
             #return false
-        #if player tries to move to a square that already has a pawn,
+        #TO DO: if player tries to move to a square that already has a pawn,
         if 1 in self._board.get(move_coord) or 2 in self._board.get(move_coord):
             print("yes pawn is in the space")
             #if there is no fence,
@@ -125,7 +127,7 @@ class QuoridorGame():
                 pass
                 #pawn jumps over that space to the next one
                 #else move diagnol
-        #if player tries to move to a square they can move to,
+        #TO DO: if player tries to move to a square they can move to,
             #find location of current pawn
             #set that location to empty
             #move pawn to coordinates given
@@ -139,7 +141,7 @@ class QuoridorGame():
         if self.is_winner(pawn):
             #if True,return False
             return False
-        #check that pawn has fences left to use
+        #TO DO: check that pawn has fences left to use
             #if yes,
                 #check that the fence coordinates are not out of bounds
                     #if yes,
@@ -149,24 +151,25 @@ class QuoridorGame():
                         #return False
                 #else find the key that matches the coord_to_place_fence
                     #add the fence details to the values in the matching key
+            #else no fences left, return false
     
     def is_winner(self, pawn):
         """* `is_winner` method that takes a single integer representing the player number as a parameter and returns `True` if that player has won and `False` if that player has not won."""
         #find the current location of pawn by calling current_location
         start_coords = self.current_location(pawn)
         print("is_winner start coords: ", start_coords)
-        #if pawn1 is on the y coordinate 8
         if pawn == 1:
             if start_coords[1] == 8:
+                #if pawn1 is on the y coordinate 8
                 print("pawn 1 is on y axis 8, win!")
+                #pawn1 wins, return true
                 return True
-            #pawn1 wins, return true
         if pawn == 2:
             if start_coords[1] == 0:
+                #if pawn2 is on y coordinate 0
                 print("pawn 2 is on y coord 0, win!")
+                #pawn2 wins, return true
                 return True
-        #if pawn2 is on y coordinate 0
-            #pawn2 wins, return true
         else:
             return False
     
