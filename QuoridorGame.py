@@ -140,12 +140,16 @@ class QuoridorGame():
             #if there is no fence,
             if 'h' in self._board.get(move_coord):
                 pass
-                #pawn jumps over that space to the next one
-                #else move diagnol
-        #TO DO: if player tries to move to a square they can move to,
-            #find location of current pawn
-            #set that location to empty
-            #move pawn to coordinates given
+                #pawn jumps over that space to the next one - call set_location once it's determined
+                #else move diagnol -- call set_location with new diagol
+        else:
+            #if player tries to move to a square they can move to,
+            #call set_location to set the new location of the pawn
+            self.set_location(pawn, move_coord)
+            if not self.is_winner(pawn):
+                pass
+            return True
+
     def place_fence(self, pawn, direction_of_fence, coord_to_place_fence):
         """* `place_fence` method takes following parameters in order: an integer that represents which player (1 or 2) is making the move, a letter indicating whether it is vertical (v) or horizontal (h) fence, a tuple of integers that represents the position on which the fence is to be placed.   
             - if player has no fence left, or if the fence is out of the boundaries of the board, or if there is already a fence there and the new fence will overlap or intersect with the existing fence, return `False`. 
