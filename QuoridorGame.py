@@ -36,7 +36,7 @@ class QuoridorGame():
             (2,8): [],
             (3,0): [],
             (3,1): [],
-            (3,2): [1, 'v', 'h'],
+            (3,2): [],
             (3,3): [],
             (3,4): [],
             (3,5): [],
@@ -100,13 +100,21 @@ class QuoridorGame():
                 print("start_coord in current location: ", start_coord)
                 return start_coord
     
-    def set_location(self, pawn, move_coord):
+    def set_location_pawn(self, pawn, move_coord):
         for key, value in self._board.items():
             #find the key 
             if move_coord == key:
                 #add the pawn to the value of that key
                 #TODO: don't delete any fences that are there!!!
                 self._board.update({key: pawn})
+    
+    def set_location_fence(self, fence, fence_coord):
+        for key, value in self._board.items():
+            #find the key 
+            if fence_coord == key:
+                #add the fence to the value of that key
+                #TODO: don't delete any pawns that are there!!!
+                self._board.update({key: fence})
     
     def difference_between_coords(self, current_location, move_location):
         #method to check the difference between current location and move location
@@ -130,7 +138,7 @@ class QuoridorGame():
         return True
     
     def is_diagnol_allowed(self, current_location, move_location):
-        #check if the requested diagnol move is allowed or not
+        #TODO: check if the requested diagnol move is allowed or not
         pass
 
     def is_horizontal_move(self, current_location, move_location):
@@ -177,18 +185,18 @@ class QuoridorGame():
                 #if there is a fence, return False
                 return False
             else:
-                #pawn jumps over that space to the next one - call set_location once it's determined
+                #pawn jumps over that space to the next one - call set_location_pawn once it's determined
                 y = move_coord[1]
                 y += 1
                 new_coord = (move_coord[0], y)
-                self.set_location(pawn, new_coord)
+                self.set_location_pawn(pawn, new_coord)
                 if not self.is_winner(pawn):
                     pass
                 return True
         else:
             #if player tries to move to a square they can move to,
-            #call set_location to set the new location of the pawn
-            self.set_location(pawn, move_coord)
+            #call set_location_pawn to set the new location of the pawn
+            self.set_location_pawn(pawn, move_coord)
             if not self.is_winner(pawn):
                 pass
             return True
@@ -203,17 +211,23 @@ class QuoridorGame():
         if self.is_winner(pawn):
             #if True,return False
             return False
-        #TO DO: check that pawn has fences left to use
+        if pawn_fence != 0:
+        #TODO: check that pawn has fences left to use
             #if yes,
-                #check that the fence coordinates are not out of bounds
-                    #if yes,
-                        #return False
-                #check that there isn't already a fence
-                    #if yes, 
-                        #return False
-                #else find the key that matches the coord_to_place_fence
-                    #add the fence details to the values in the matching key
-            #else no fences left, return false
+            if coord_to_place_fence[0] < 0 or coord_to_place_fence[0] > 8 or coord_to_place_fence[1] < 0 or coord_to_place_fence[1] > 8:
+            #check that the fence coordinates are not out of bounds, if yes, return False
+                return False
+            if 'h' in self._board.get(coord_to_place_fence) or 'v' in self._board.get(coord_to_place_fence):
+            #check that there isn't already a fence, if yes, return False
+                return False
+            else:
+            #else find the key that matches the coord_to_place_fence
+                self.set_location_fence(direction_of_fence, coord_to_place_fence)
+                #add the fence details to the values in the matching key
+                return True
+        else:
+        #else no fences left, return false
+            return False
     
     def is_winner(self, pawn):
         """* `is_winner` method that takes a single integer representing the player number as a parameter and returns `True` if that player has won and `False` if that player has not won."""
