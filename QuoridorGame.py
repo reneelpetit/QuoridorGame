@@ -36,7 +36,7 @@ class QuoridorGame():
             (2,8): [],
             (3,0): [],
             (3,1): [],
-            (3,2): [],
+            (3,2): [1, 'v', 'h'],
             (3,3): [],
             (3,4): [],
             (3,5): [],
@@ -105,11 +105,12 @@ class QuoridorGame():
             #find the key 
             if move_coord == key:
                 #add the pawn to the value of that key
-                #TO DO: don't delete any fences that are there!!!
+                #TODO: don't delete any fences that are there!!!
                 self._board.update({key: pawn})
     
     def difference_between_coords(self, current_location, move_location):
         #method to check the difference between current location and move location
+        #TODO: add code for checking if diagnol or jump over is allowed
         x1 = current_location[0]
         print("x1 is, ", x1)
         x2 = move_location[0]
@@ -121,8 +122,24 @@ class QuoridorGame():
         distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
         print("distance between coords is: ", distance)
         if distance != 1:
-            return False
+            if self._is_diagnol_allowed(current_location, move_location):
+                #do some other stuff
+                pass
+            else:
+                return False
         return True
+    
+    def is_diagnol_allowed(self, current_location, move_location):
+        #check if the requested diagnol move is allowed or not
+        pass
+
+    def is_horizontal_move(self, current_location, move_location):
+        x1 = current_location[0]
+        x2 = move_location[0]
+        answer = x1 - x2
+        if abs(answer) == 1:
+            return True
+        return False
 
     def move_pawn(self, pawn, move_coord):
         """* `move_pawn` method takes following two parameters in order: an integer that represents which player (1 or 2) is making the move and a tuple with the coordinates of where the pawn is going to be moved to.
@@ -145,16 +162,29 @@ class QuoridorGame():
             #check if the distance between the start_coord and the move_coord is 1
             #if not 1 then player cannot move to that space, return false
             return False
-        #TO DO: if player tries to move over a fence, 
-            #return false
+        
+        if 'h' in self._board.get(move_coord) or 'v' in self._board.get(move_coord):
+            #if player tries to move over a fence,
+            return False
+
         if 1 in self._board.get(move_coord) or 2 in self._board.get(move_coord):
-            #TO DO: if player tries to move to a square that already has a pawn,
+            #if player tries to move to a square that already has a pawn,
             print("yes pawn is in the space")
-            #if there is no fence,
-            if 'h' in self._board.get(move_coord):
-                pass
+            if self.is_horizontal_move(start_coord, move_coord):
+                #call is horizontal to check if it's a horizontal move or not, if it is, return False
+                return False
+            elif 'h' in self._board.get(move_coord):
+                #if there is a fence, return False
+                return False
+            else:
                 #pawn jumps over that space to the next one - call set_location once it's determined
-                #else move diagnol -- call set_location with new diagol
+                y = move_coord[1]
+                y += 1
+                new_coord = (move_coord[0], y)
+                self.set_location(pawn, new_coord)
+                if not self.is_winner(pawn):
+                    pass
+                return True
         else:
             #if player tries to move to a square they can move to,
             #call set_location to set the new location of the pawn
