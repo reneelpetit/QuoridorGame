@@ -1,6 +1,8 @@
 #Name: Renee Petit
 #Date: 8/3/21
-#Description:
+#Description: Program to play Quoridor with 2 players who have 10 fences each.
+import math
+import fractions
 
 class QuoridorGame():
     def __init__(self):
@@ -107,9 +109,21 @@ class QuoridorGame():
                 #TO DO: don't delete any fences that are there!!!
                 self._board.update({key: pawn})
     
-    def get_difference_between_coords(self, pawn, current_location, move_location):
+    def difference_between_coords(self, current_location, move_location):
         #method to check the difference between current location and move location
-        pass
+        x1 = current_location[0]
+        print("x1 is, ", x1)
+        x2 = move_location[0]
+        print("x2 is, ", x2)
+        y1 = current_location[1]
+        print("y1 is, ", y1)
+        y2 = move_location[1]
+        print("y2 is, ", y2)
+        distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        print("distance between coords is: ", distance)
+        if distance != 1:
+            return False
+        return True
 
     def move_pawn(self, pawn, move_coord):
         """* `move_pawn` method takes following two parameters in order: an integer that represents which player (1 or 2) is making the move and a tuple with the coordinates of where the pawn is going to be moved to.
@@ -123,19 +137,19 @@ class QuoridorGame():
         #find the starting coordinates of the pawn by calling current_location and storing key in start_coord
         start_coord = self.current_location(pawn)
         print("move pawn start coord: ", start_coord)
-        #find the distance between the start_coord and the move_coord
-        difference_between_locations = self.get_difference_between_coords(pawn, start_coord, move_coord)
-        print("the difference is ", difference_between_locations)
         #TO DO: if player tries to move over a fence, 
             #return false
         if move_coord[0] < 0 or move_coord[0] > 8 or move_coord[1] < 0 or move_coord[1] > 8:
             #if player tries to move off the board, 
             #return false
             return False
-        #TO DO: if player tries to move to space they cannot move to,
-            #return false
-        #TO DO: if player tries to move to a square that already has a pawn,
+        if not self.difference_between_coords(start_coord, move_coord):
+            print("move is not 1 space")
+            #check if the distance between the start_coord and the move_coord is 1
+            #if not 1 then player cannot move to that space, return false
+            return False
         if 1 in self._board.get(move_coord) or 2 in self._board.get(move_coord):
+            #TO DO: if player tries to move to a square that already has a pawn,
             print("yes pawn is in the space")
             #if there is no fence,
             if 'h' in self._board.get(move_coord):
@@ -206,5 +220,5 @@ class QuoridorGame():
 
 game = QuoridorGame()
 game.print_board()
-game.move_pawn(1, (4,8))
+game.move_pawn(1, (5,1))
 game.is_winner(1)
