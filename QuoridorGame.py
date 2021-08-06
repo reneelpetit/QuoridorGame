@@ -2,7 +2,6 @@
 #Date: 8/3/21
 #Description: Program to play Quoridor with 2 players who have 10 fences each.
 import math
-import fractions
 
 class QuoridorGame():
     def __init__(self):
@@ -137,8 +136,6 @@ class QuoridorGame():
         #find the starting coordinates of the pawn by calling current_location and storing key in start_coord
         start_coord = self.current_location(pawn)
         print("move pawn start coord: ", start_coord)
-        #TO DO: if player tries to move over a fence, 
-            #return false
         if move_coord[0] < 0 or move_coord[0] > 8 or move_coord[1] < 0 or move_coord[1] > 8:
             #if player tries to move off the board, 
             #return false
@@ -148,6 +145,8 @@ class QuoridorGame():
             #check if the distance between the start_coord and the move_coord is 1
             #if not 1 then player cannot move to that space, return false
             return False
+        #TO DO: if player tries to move over a fence, 
+            #return false
         if 1 in self._board.get(move_coord) or 2 in self._board.get(move_coord):
             #TO DO: if player tries to move to a square that already has a pawn,
             print("yes pawn is in the space")
