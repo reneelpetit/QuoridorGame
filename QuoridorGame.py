@@ -98,6 +98,10 @@ class QuoridorGame():
                 start_coord = key
                 print("start_coord in current location: ", start_coord)
                 return start_coord
+    
+    def get_difference_between_coords(self, pawn, current_location, move_location):
+        #method to check the difference between current location and move location
+        pass
 
     def move_pawn(self, pawn, move_coord):
         """* `move_pawn` method takes following two parameters in order: an integer that represents which player (1 or 2) is making the move and a tuple with the coordinates of where the pawn is going to be moved to.
@@ -111,6 +115,9 @@ class QuoridorGame():
         #find the starting coordinates of the pawn by calling current_location and storing key in start_coord
         start_coord = self.current_location(pawn)
         print("move pawn start coord: ", start_coord)
+        #find the distance between the start_coord and the move_coord
+        difference_between_locations = self.get_difference_between_coords(pawn, start_coord, move_coord)
+        print("the difference is ", difference_between_locations)
         #TO DO: if player tries to move over a fence, 
             #return false
         if move_coord[0] < 0 or move_coord[0] > 8 or move_coord[1] < 0 or move_coord[1] > 8:
