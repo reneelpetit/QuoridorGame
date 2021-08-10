@@ -44,7 +44,7 @@ class QuoridorGame():
             (3,7): [],
             (3,8): [],
             (4,0): [1],
-            (4,1): ['v'],
+            (4,1): [],
             (4,2): [],
             (4,3): [],
             (4,4): [],
@@ -129,8 +129,20 @@ class QuoridorGame():
 
     def is_diagonal_allowed(self, pawn, current_location, move_location):
         #check if the requested diagnol move is allowed or not
-        if 1 in self._board.get(move_location) or 2 in self._board.get(move_location):
-            #check if there is a player
+        #check if other pawn is above the current_location
+        below_coord = current_location[0], current_location[1] + 1
+        above_coord = current_location[0], current_location[1] - 1
+        below_fence_coord = current_location[0], current_location[1] + 2
+        above_fence_coord = current_location[0], current_location[1] - 2
+                
+        if (pawn == 1 and self._board[below_coord][0] == 2) or (pawn == 2 and self._board[below_coord][0] == 1):
+            #if h 2 below our pawn's spot
+            if 'h' in self._board[below_fence_coord]:
+                #if moving down and right or down and left, return True
+                if move_location == (current_location[0] - 1, current_location[1] + 1) or move_location == (current_location[0] + 1, current_location[1] + 1):
+                    #yes can move
+                    #TODO: call set position
+        #check if other pawn is below the current_location
             if self.is_horizontal_move(current_location, move_location):
                 #call is horizontal to check if it's a horizontal move or not, if it is, return False
                 return False
@@ -150,19 +162,16 @@ class QuoridorGame():
                 return True
         return False
 
-    def difference_between_coords(self, current_location, move_location):
+    def difference_between_coords(self, pawn, current_location, move_location):
         #method to check the difference between current location and move location
         x1 = current_location[0]
-        print("x1 is, ", x1)
         x2 = move_location[0]
-        print("x2 is, ", x2)
         y1 = current_location[1]
-        print("y1 is, ", y1)
         y2 = move_location[1]
-        print("y2 is, ", y2)
         distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
-        print("distance between coords is: ", distance)
         if distance != 1:
+            if distance == math.sqrt(2):
+                self.is_diagonal_allowed(pawn, current_location, move_location)
             return False
         else:
             return True
@@ -186,14 +195,12 @@ class QuoridorGame():
             return False
         #find the starting coordinates of the pawn by calling current_location and storing key in start_coord
         start_coord = self.current_location(pawn)
-        print("move pawn start coord: ", start_coord)
         if move_coord[0] < 0 or move_coord[0] > 8 or move_coord[1] < 0 or move_coord[1] > 8:
             #if player tries to move off the board, 
             #return false
             return False
-        if not self.difference_between_coords(start_coord, move_coord):
+        if not self.difference_between_coords(pawn, start_coord, move_coord):
             #check if the distance between the start_coord and the move_coord is 1
-            print("move is not 1 space")
             if self.is_diagonal_allowed(pawn, start_coord, move_coord):
                 #check if diagonal move is allowed, if yes, return True
                 return True
