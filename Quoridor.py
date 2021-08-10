@@ -49,7 +49,7 @@ class QuoridorGame():
             (4,3): [],
             (4,4): [],
             (4,5): [],
-            (4,6): ['v'],
+            (4,6): [],
             (4,7): [],
             (4,8): [2],
             (5,0): [],
@@ -109,6 +109,7 @@ class QuoridorGame():
                 new_value = [pawn] + value
                 #add the pawn to the value of that key
                 self._board.update({key: new_value})
+                return
     
     def set_location_fence(self, fence, fence_coord):
         for key, value in self._board.items():
@@ -117,7 +118,6 @@ class QuoridorGame():
                 #add the fence to the value of that key
                 new_value = [fence] + value
                 self._board.update({key: new_value})
-                print("key & value", key, self._board[key])
                 return
 
     def delete_current_location(self, pawn, current_location):
@@ -128,7 +128,6 @@ class QuoridorGame():
                 value.remove(pawn)
                 #update board
                 self._board.update({key: value})
-                print("delete_current_location, key, value, new_value: ", key, value)
                 return
 
     def is_diagonal_allowed(self, pawn, current_location, move_location):
@@ -329,7 +328,7 @@ class QuoridorGame():
         print(self._board[(0,7)], self._board[(1,7)], self._board[(2,7)], self._board[(3,7)], self._board[(4,7)], self._board[(5,7)], self._board[(6,7)], self._board[(7,7)], self._board[(8,7)])
         print(self._board[(0,8)], self._board[(1,8)], self._board[(2,8)], self._board[(3,8)], self._board[(4,8)], self._board[(5,8)], self._board[(6,8)], self._board[(7,8)], self._board[(8,8)])
 
-game = QuoridorGame()
+""" game = QuoridorGame()
 game.print_board()
 print("2, 3,1 results in: ", game.move_pawn(2, (3,1)))
 game.print_board()
@@ -339,4 +338,4 @@ print("2, 4,7 results in: ", game.move_pawn(2, (4,7)))
 game.print_board()
 print("1 places 'v' fence: ", game.place_fence(1, 'v', (1,3)))
 game.print_board()
-print("pawn1 fences, ", game._pawn1fences)
+print("pawn1 fences, ", game._pawn1fences) """
