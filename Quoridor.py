@@ -141,25 +141,20 @@ class QuoridorGame():
                 #if moving down and right or down and left, return True
                 if move_location == (current_location[0] - 1, current_location[1] + 1) or move_location == (current_location[0] + 1, current_location[1] + 1):
                     #yes can move
-                    #TODO: call set position
-        #check if other pawn is below the current_location
-            if self.is_horizontal_move(current_location, move_location):
-                #call is horizontal to check if it's a horizontal move or not, if it is, return False
-                return False
-        
-            if 'h' in self._board.get(move_location):
-                #if there is a fence, return False
-                return False
-            else:
-                """ #pawn jumps over that space to the next one - call set_location_pawn once it's determined
-                y = move_location[1]
-                y += 1
-                new_coord = (move_location[0], y) """
-                self.set_location_pawn(pawn, move_location)
-                self.delete_current_location(pawn, current_location)
-                if not self.is_winner(pawn):
-                    pass
-                return True
+                    self.set_location_pawn(pawn, move_location)
+                    self.delete_current_location(pawn, current_location)
+                    return True
+
+        #check above
+        if (pawn == 1 and self._board[above_coord][0] == 2) or (pawn == 2 and self._board[above_coord][0] == 1):
+            #if h above our pawn's spot
+            if 'h' in self._board[above_fence_coord]:
+                #if moving up and right or up and left, return True
+                if move_location == (current_location[0] -1, current_location[1] - 1) or move_location == (current_location[0] + 1, current_location[1] + 1):
+                    #yes can move
+                    self.set_location_pawn(pawn, move_location)
+                    self.delete_current_location(pawn, current_location)
+                    return True      
         return False
 
     def difference_between_coords(self, pawn, current_location, move_location):
@@ -171,7 +166,10 @@ class QuoridorGame():
         distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
         if distance != 1:
             if distance == math.sqrt(2):
-                self.is_diagonal_allowed(pawn, current_location, move_location)
+                if not self.is_diagonal_allowed(pawn, current_location, move_location):
+                    return False
+                else:
+                    return "diagonal"
             return False
         else:
             return True
@@ -199,18 +197,16 @@ class QuoridorGame():
             #if player tries to move off the board, 
             #return false
             return False
-        if not self.difference_between_coords(pawn, start_coord, move_coord):
-            #check if the distance between the start_coord and the move_coord is 1
-            if self.is_diagonal_allowed(pawn, start_coord, move_coord):
-                #check if diagonal move is allowed, if yes, return True
-                return True
-            else:
-            #if not, return false
-                return False
+        difference = self.difference_between_coords(pawn, start_coord, move_coord)
+        #check if the distance between the start_coord and the move_coord is 1
+        if difference == "diagonal":
+            return True
 
+        if difference == False:
+            return False
+            
         if 1 in self._board.get(move_coord) or 2 in self._board.get(move_coord):
             #if player tries to move to a square that already has a pawn,
-            print("yes pawn is in the space")
             return False
         
         if self.is_horizontal_move(start_coord, move_coord):
@@ -221,8 +217,6 @@ class QuoridorGame():
             else:
                 self.set_location_pawn(pawn, move_coord)
                 self.delete_current_location(pawn, start_coord)
-                if not self.is_winner(pawn):
-                    pass
                 return True
         else:
             if 'h' in self._board.get(move_coord):
@@ -232,8 +226,6 @@ class QuoridorGame():
                 #set the new location and return True
                 self.set_location_pawn(pawn, move_coord)
                 self.delete_current_location(pawn, start_coord)
-                if not self.is_winner(pawn):
-                    pass
                 return True
 
     def place_fence(self, pawn, direction_of_fence, coord_to_place_fence):
@@ -274,17 +266,14 @@ class QuoridorGame():
         """* `is_winner` method that takes a single integer representing the player number as a parameter and returns `True` if that player has won and `False` if that player has not won."""
         #find the current location of pawn by calling current_location
         start_coords = self.current_location(pawn)
-        print("is_winner start coords: ", start_coords)
         if pawn == 1:
             if start_coords[1] == 8:
                 #if pawn1 is on the y coordinate 8
-                print("pawn 1 is on y axis 8, win!")
                 #pawn1 wins, return true
                 return True
         if pawn == 2:
             if start_coords[1] == 0:
                 #if pawn2 is on y coordinate 0
-                print("pawn 2 is on y coord 0, win!")
                 #pawn2 wins, return true
                 return True
         else:
