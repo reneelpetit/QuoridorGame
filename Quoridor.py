@@ -97,16 +97,13 @@ class QuoridorGame():
             if pawn in value:
                 #Get the key & store key in start_coord
                 start_coord = key
-                print("start_coord in current location: ", start_coord)
                 return start_coord
     
     def set_location_pawn(self, pawn, move_coord):
         for key, value in self._board.items():
             #find the key 
             if move_coord == key:
-                print("value before adding pawn ", value)
                 new_value = [pawn] + value
-                print("value after adding pawn ", new_value)
                 #add the pawn to the value of that key
                 self._board.update({key: new_value})
     
