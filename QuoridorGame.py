@@ -115,15 +115,43 @@ class QuoridorGame():
             #find the key 
             if fence_coord == key:
                 #add the fence to the value of that key
-                #TODO: don't delete any pawns that are there!!!
-                self._board.update({key: fence})
+                new_value = [fence] + value
+                self._board.update({key: new_value})
 
-    def delete_current_location(pawn, current_location):
-        pass
-    
+    def delete_current_location(self, pawn, current_location):
+        for key, value in self._board.item():
+            #find key
+            if current_location == key:
+                #remove pawn from value
+                new_value = value.remove(pawn)
+                #update board
+                self._board.update({key: new_value})
+
+    def is_diagonal_allowed(self, pawn, current_location, move_location):
+        #check if the requested diagnol move is allowed or not
+        if 1 in self._board.get(move_location) or 2 in self._board.get(move_location):
+            #check if there is a player
+            if self.is_horizontal_move(current_location, move_location):
+                #call is horizontal to check if it's a horizontal move or not, if it is, return False
+                return False
+        
+            if 'h' in self._board.get(move_location):
+                #if there is a fence, return False
+                return False
+            else:
+                """ #pawn jumps over that space to the next one - call set_location_pawn once it's determined
+                y = move_location[1]
+                y += 1
+                new_coord = (move_location[0], y) """
+                self.set_location_pawn(pawn, move_location)
+                self.delete_current_location(pawn, current_location)
+                if not self.is_winner(pawn):
+                    pass
+                return True
+        return False
+
     def difference_between_coords(self, current_location, move_location):
         #method to check the difference between current location and move location
-        #TODO: add code for checking if diagnol or jump over is allowed
         x1 = current_location[0]
         print("x1 is, ", x1)
         x2 = move_location[0]
@@ -135,18 +163,10 @@ class QuoridorGame():
         distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
         print("distance between coords is: ", distance)
         if distance != 1:
-            if self._is_diagnol_allowed(current_location, move_location):
-                #do some other stuff
-                pass
-            else:
-                return False
+            return False
         else:
             return True
     
-    def is_diagnol_allowed(self, current_location, move_location):
-        #TODO: check if the requested diagnol move is allowed or not
-        return False
-
     def is_horizontal_move(self, current_location, move_location):
         x1 = current_location[0]
         x2 = move_location[0]
@@ -172,49 +192,39 @@ class QuoridorGame():
             #return false
             return False
         if not self.difference_between_coords(start_coord, move_coord):
-            print("move is not 1 space")
             #check if the distance between the start_coord and the move_coord is 1
-            #if not 1 then player cannot move to that space, return false
-            return False
+            print("move is not 1 space")
+            if self.is_diagonal_allowed(pawn, start_coord, move_coord):
+                #check if diagonal move is allowed, if yes, return True
+                return True
+            else:
+            #if not, return false
+                return False
 
         if 1 in self._board.get(move_coord) or 2 in self._board.get(move_coord):
             #if player tries to move to a square that already has a pawn,
             print("yes pawn is in the space")
-            if self.is_horizontal_move(start_coord, move_coord):
-                #call is horizontal to check if it's a horizontal move or not, if it is, return False
-                return False
-            if 'h' in self._board.get(move_coord):
-                #if there is a fence, return False
+            return False
+        
+        if self.is_horizontal_move(start_coord, move_coord):
+            #if it's a horizontal move
+            if 'v' in self._board.get(move_coord):
+                #if there is a vertical fence
                 return False
             else:
-                #pawn jumps over that space to the next one - call set_location_pawn once it's determined
-                y = move_coord[1]
-                y += 1
-                new_coord = (move_coord[0], y)
-                self.set_location_pawn(pawn, new_coord)
-                #TODO: delete pawn from current location
+                self.set_location_pawn(pawn, move_coord)
+                self.delete_current_location(pawn, start_coord)
                 if not self.is_winner(pawn):
                     pass
                 return True
-        
-        if self.is_horizontal_move(start_coord, move_coord):
-            if 'v' in self._board.get(move_coord):
-                return False
-            #if player tries to move over a fence,
-            #TODO: depends on which direction they are moving
-            else:
-                self.set_location_pawn(pawn, move_coord)
-                #delete pawn from current_location
-                return True
-        
         else:
-            #if player tries to move to a square they can move to,
-            #call set_location_pawn to set the new location of the pawn
             if 'h' in self._board.get(move_coord):
+                #if there is a horizontal fence
                 return False
             else:
+                #set the new location and return True
                 self.set_location_pawn(pawn, move_coord)
-                #TODO: delete pawn form current_location
+                self.delete_current_location(pawn, start_coord)
                 if not self.is_winner(pawn):
                     pass
                 return True
@@ -235,13 +245,19 @@ class QuoridorGame():
             if coord_to_place_fence[0] < 0 or coord_to_place_fence[0] > 8 or coord_to_place_fence[1] < 0 or coord_to_place_fence[1] > 8:
             #check that the fence coordinates are not out of bounds, if yes, return False
                 return False
-            if 'h' in self._board.get(coord_to_place_fence) or 'v' in self._board.get(coord_to_place_fence):
-            #check that there isn't already a fence, if yes, return False
-                return False
+            if direction_of_fence == 'h':
+                #if it's a horizontal fence
+                if 'h' in self._board.get(coord_to_place_fence):
+                    #if there is already an 'h' fence there
+                    return False
+            if direction_of_fence == 'v':
+                #if it's a vertical fence
+                if 'v' in self._board.get(coord_to_place_fence):
+                    #if a 'v' fence is already there
+                    return False
             else:
             #else find the key that matches the coord_to_place_fence
                 self.set_location_fence(direction_of_fence, coord_to_place_fence)
-                #add the fence details to the values in the matching key
                 return True
         else:
         #else no fences left, return false
@@ -281,5 +297,5 @@ class QuoridorGame():
 
 game = QuoridorGame()
 game.print_board()
-print(game.move_pawn(1, (4,1)))
+print(game.move_pawn(1, (3,1)))
 game.print_board()
