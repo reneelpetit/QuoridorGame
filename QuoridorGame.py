@@ -295,7 +295,7 @@ class QuoridorGame():
         print(self._board[(0,7)], self._board[(1,7)], self._board[(2,7)], self._board[(3,7)], self._board[(4,7)], self._board[(5,7)], self._board[(6,7)], self._board[(7,7)], self._board[(8,7)])
         print(self._board[(0,8)], self._board[(1,8)], self._board[(2,8)], self._board[(3,8)], self._board[(4,8)], self._board[(5,8)], self._board[(6,8)], self._board[(7,8)], self._board[(8,8)])
 
-game = QuoridorGame()
+""" game = QuoridorGame()
 game.print_board()
 print(game.move_pawn(1, (3,1)))
-game.print_board()
+game.print_board() """
