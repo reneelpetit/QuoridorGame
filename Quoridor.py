@@ -49,7 +49,7 @@ class QuoridorGame():
             (4,3): [],
             (4,4): [],
             (4,5): [],
-            (4,6): [],
+            (4,6): ['v'],
             (4,7): [],
             (4,8): [2],
             (5,0): [],
@@ -89,6 +89,9 @@ class QuoridorGame():
             (8,7): [],
             (8,8): []
                 }
+        self._pawn1fences = 10
+        self._pawn2fences = 10
+        self._turn = 1
     
     def current_location(self, pawn):
         #method to return the current location of a pawn
@@ -114,44 +117,51 @@ class QuoridorGame():
                 #add the fence to the value of that key
                 new_value = [fence] + value
                 self._board.update({key: new_value})
+                print("key & value", key, self._board[key])
+                return
 
     def delete_current_location(self, pawn, current_location):
-        for key, value in self._board.item():
+        for key, value in self._board.items():
             #find key
             if current_location == key:
                 #remove pawn from value
-                new_value = value.remove(pawn)
+                value.remove(pawn)
                 #update board
-                self._board.update({key: new_value})
+                self._board.update({key: value})
+                print("delete_current_location, key, value, new_value: ", key, value)
+                return
 
     def is_diagonal_allowed(self, pawn, current_location, move_location):
         #check if the requested diagnol move is allowed or not
         #check if other pawn is above the current_location
-        below_coord = current_location[0], current_location[1] + 1
-        above_coord = current_location[0], current_location[1] - 1
-        below_fence_coord = current_location[0], current_location[1] + 2
-        above_fence_coord = current_location[0], current_location[1] - 2
-                
-        if (pawn == 1 and self._board[below_coord][0] == 2) or (pawn == 2 and self._board[below_coord][0] == 1):
-            #if h 2 below our pawn's spot
-            if 'h' in self._board[below_fence_coord]:
-                #if moving down and right or down and left, return True
-                if move_location == (current_location[0] - 1, current_location[1] + 1) or move_location == (current_location[0] + 1, current_location[1] + 1):
-                    #yes can move
-                    self.set_location_pawn(pawn, move_location)
-                    self.delete_current_location(pawn, current_location)
-                    return True
+        below_coord = (current_location[0], current_location[1] + 1)
+        above_coord = (current_location[0], current_location[1] - 1)
+        below_fence_coord = (current_location[0], current_location[1] + 2)
+        above_fence_coord = (current_location[0], current_location[1] - 2)
 
+        if below_coord[0] > 0 and below_coord[0] < 8 and below_coord[1] > 0 and below_coord[1] < 8:
+           #if below coord is inbounds    
+            if (pawn == 1 and 2 in self._board.get(below_coord)) or (pawn == 2 and 1 in self._board.get(below_coord)):
+                #if h 2 below our pawn's spot
+                if 'h' in self._board.get(below_fence_coord):
+                    #if moving down and right or down and left, return True
+                    if move_location == (current_location[0] - 1, current_location[1] + 1) or move_location == (current_location[0] + 1, current_location[1] + 1):
+                        #yes can move
+                        self.set_location_pawn(pawn, move_location)
+                        self.delete_current_location(pawn, current_location)
+                        return True
         #check above
-        if (pawn == 1 and self._board[above_coord][0] == 2) or (pawn == 2 and self._board[above_coord][0] == 1):
-            #if h above our pawn's spot
-            if 'h' in self._board[above_fence_coord]:
-                #if moving up and right or up and left, return True
-                if move_location == (current_location[0] -1, current_location[1] - 1) or move_location == (current_location[0] + 1, current_location[1] + 1):
-                    #yes can move
-                    self.set_location_pawn(pawn, move_location)
-                    self.delete_current_location(pawn, current_location)
-                    return True      
+        if above_coord[0] > 0 and above_coord[0] < 8 and above_coord[1] > 0 and above_coord[1] < 8:
+            #if above coord is inbounds
+            if (pawn == 1 and 2 in self._board.get(above_coord)) or (pawn == 2 and 1 in self._board.get(above_coord)):
+                #if h above our pawn's spot
+                if 'h' in self._board.get(above_fence_coord):
+                    #if moving up and right or up and left, return True
+                    if move_location == (current_location[0] -1, current_location[1] - 1) or move_location == (current_location[0] + 1, current_location[1] + 1):
+                        #yes can move
+                        self.set_location_pawn(pawn, move_location)
+                        self.delete_current_location(pawn, current_location)
+                        return True      
         return False
 
     def difference_between_coords(self, pawn, current_location, move_location):
@@ -184,6 +194,9 @@ class QuoridorGame():
             - if the move is forbidden by the rule or blocked by the fence, return `False`
             - if the move was successful or if the move makes the player win, return `True`
             - if the game has been already won, return `False`"""
+        #check if it's the player's turn
+        if self._turn != pawn:
+            return False
         #check if game is already won by calling is_winner()
         if self.is_winner(pawn):
             #if True,return False
@@ -197,6 +210,11 @@ class QuoridorGame():
         difference = self.difference_between_coords(pawn, start_coord, move_coord)
         #check if the distance between the start_coord and the move_coord is 1
         if difference == "diagonal":
+            #update player turn
+            if self._turn == 1:
+                self._turn = 2
+            else:
+                self._turn = 1
             return True
 
         if difference == False:
@@ -214,6 +232,11 @@ class QuoridorGame():
             else:
                 self.set_location_pawn(pawn, move_coord)
                 self.delete_current_location(pawn, start_coord)
+                #update player turn
+                if self._turn == 1:
+                    self._turn = 2
+                else:
+                    self._turn = 1
                 return True
         else:
             if 'h' in self._board.get(move_coord):
@@ -223,6 +246,11 @@ class QuoridorGame():
                 #set the new location and return True
                 self.set_location_pawn(pawn, move_coord)
                 self.delete_current_location(pawn, start_coord)
+                #update player turn
+                if self._turn == 1:
+                    self._turn = 2
+                else:
+                    self._turn = 1
                 return True
 
     def place_fence(self, pawn, direction_of_fence, coord_to_place_fence):
@@ -232,32 +260,45 @@ class QuoridorGame():
             - If it breaks the fair-play rule (and if you are doing the extra credit part), return exactly the string `breaks the fair play rule`.
             - If the game has been already won, return `False`"""
         #check that no one has won by calling is_winner
+        #needs to check if player has fences left and if yes, how many
+        if pawn == 1:
+            #if pawn is 1
+            if self._pawn1fences <= 0:
+                return False
+        elif pawn == 2:
+            if self._pawn2fences <= 0:
+                return False
+        #check it's the player's turn
+        if self._turn != pawn:
+            return False
         if self.is_winner(pawn):
             #if True,return False
             return False
-        if pawn_fence != 0:
-        #TODO: check that pawn has fences left to use
-            #if yes,
-            if coord_to_place_fence[0] < 0 or coord_to_place_fence[0] > 8 or coord_to_place_fence[1] < 0 or coord_to_place_fence[1] > 8:
-            #check that the fence coordinates are not out of bounds, if yes, return False
-                return False
-            if direction_of_fence == 'h':
-                #if it's a horizontal fence
-                if 'h' in self._board.get(coord_to_place_fence):
-                    #if there is already an 'h' fence there
-                    return False
-            if direction_of_fence == 'v':
-                #if it's a vertical fence
-                if 'v' in self._board.get(coord_to_place_fence):
-                    #if a 'v' fence is already there
-                    return False
-            else:
-            #else find the key that matches the coord_to_place_fence
-                self.set_location_fence(direction_of_fence, coord_to_place_fence)
-                return True
-        else:
-        #else no fences left, return false
+        #if yes,
+        if coord_to_place_fence[0] < 0 or coord_to_place_fence[0] > 8 or coord_to_place_fence[1] < 0 or coord_to_place_fence[1] > 8:
+        #check that the fence coordinates are not out of bounds, if yes, return False
             return False
+        if direction_of_fence == 'h':
+            #if it's a horizontal fence
+            if 'h' in self._board.get(coord_to_place_fence):
+                #if there is already an 'h' fence there
+                return False
+        elif direction_of_fence == 'v':
+            #if it's a vertical fence
+            if 'v' in self._board.get(coord_to_place_fence):
+                #if a 'v' fence is already there
+                return False
+        #else find the key that matches the coord_to_place_fence
+        self.set_location_fence(direction_of_fence, coord_to_place_fence)
+        if pawn == 1:
+            self._pawn1fences = self._pawn1fences - 1
+        if pawn == 2:
+            self._pawn2fences = self._pawn2fences - 1
+        if self._turn == 1:
+            self._turn = 2
+        else:
+            self._turn = 1
+        return True
     
     def is_winner(self, pawn):
         """* `is_winner` method that takes a single integer representing the player number as a parameter and returns `True` if that player has won and `False` if that player has not won."""
@@ -288,7 +329,14 @@ class QuoridorGame():
         print(self._board[(0,7)], self._board[(1,7)], self._board[(2,7)], self._board[(3,7)], self._board[(4,7)], self._board[(5,7)], self._board[(6,7)], self._board[(7,7)], self._board[(8,7)])
         print(self._board[(0,8)], self._board[(1,8)], self._board[(2,8)], self._board[(3,8)], self._board[(4,8)], self._board[(5,8)], self._board[(6,8)], self._board[(7,8)], self._board[(8,8)])
 
-""" game = QuoridorGame()
+game = QuoridorGame()
 game.print_board()
-print(game.move_pawn(1, (3,1)))
-game.print_board() """
+print("2, 3,1 results in: ", game.move_pawn(2, (3,1)))
+game.print_board()
+print("1, 4,1 results in: ", game.move_pawn(1, (4,1)))
+game.print_board()
+print("2, 4,7 results in: ", game.move_pawn(2, (4,7)))
+game.print_board()
+print("1 places 'v' fence: ", game.place_fence(1, 'v', (1,3)))
+game.print_board()
+print("pawn1 fences, ", game._pawn1fences)
