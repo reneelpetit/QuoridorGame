@@ -170,8 +170,11 @@ class QuoridorGame():
         y1 = current_location[1]
         y2 = move_location[1]
         distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        #if the distance is not 1, check for diagnol or jump move allowed, else return True
         if distance != 1:
+            #check if it's a diagnol of only 1 space or not, if not return False
             if distance == math.sqrt(2):
+                #if diagnol move is not allowed, return false, otherwise return diagnol
                 if not self.is_diagonal_allowed(pawn, current_location, move_location):
                     return False
                 else:
@@ -197,7 +200,7 @@ class QuoridorGame():
         if self._turn != pawn:
             return False
         #check if game is already won by calling is_winner()
-        if self.is_winner(pawn):
+        if self.is_winner(1) or self.is_winner(2):
             #if True,return False
             return False
         #find the starting coordinates of the pawn by calling current_location and storing key in start_coord
@@ -209,7 +212,7 @@ class QuoridorGame():
         difference = self.difference_between_coords(pawn, start_coord, move_coord)
         #check if the distance between the start_coord and the move_coord is 1
         if difference == "diagonal":
-            #update player turn
+            #if the return value is diagnol, move has been made, so update player turn
             if self._turn == 1:
                 self._turn = 2
             else:
@@ -217,6 +220,7 @@ class QuoridorGame():
             return True
 
         if difference == False:
+            #if the difference returned as False, return false
             return False
             
         if 1 in self._board.get(move_coord) or 2 in self._board.get(move_coord):
@@ -270,7 +274,8 @@ class QuoridorGame():
         #check it's the player's turn
         if self._turn != pawn:
             return False
-        if self.is_winner(pawn):
+        #check if game is already won by calling is_winner()
+        if self.is_winner(1) or self.is_winner(2):
             #if True,return False
             return False
         #if yes,
@@ -308,7 +313,7 @@ class QuoridorGame():
                 #if pawn1 is on the y coordinate 8
                 #pawn1 wins, return true
                 return True
-        if pawn == 2:
+        elif pawn == 2:
             if start_coords[1] == 0:
                 #if pawn2 is on y coordinate 0
                 #pawn2 wins, return true
@@ -332,10 +337,21 @@ class QuoridorGame():
 game.print_board()
 print("2, 3,1 results in: ", game.move_pawn(2, (3,1)))
 game.print_board()
-print("1, 4,1 results in: ", game.move_pawn(1, (4,1)))
+print("1, 3,1 diagonal results in: ", game.move_pawn(1, (3,1)))
 game.print_board()
 print("2, 4,7 results in: ", game.move_pawn(2, (4,7)))
 game.print_board()
+print("1 tries to move diagonal, ", game.move_pawn(1, (3,2)))
 print("1 places 'v' fence: ", game.place_fence(1, 'v', (1,3)))
 game.print_board()
-print("pawn1 fences, ", game._pawn1fences) """
+print("pawn1 fences, ", game._pawn1fences)
+print("2 places 'h' fence: ", game.place_fence(2, 'h', (4,4)))
+print("pawn2 fences, ", game._pawn2fences)
+game.print_board()
+print("1 tries to move off board, ", game.move_pawn(1, (1,9)))
+print("1 places fence at 4,0, ", game.place_fence(1, 'v', (4,0)))
+game.print_board()
+print("2 tries to move to 4,0", game.move_pawn(2, (4,0)))
+game.print_board()
+print(game.is_winner(2))
+ """
