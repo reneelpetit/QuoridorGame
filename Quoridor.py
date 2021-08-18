@@ -318,8 +318,7 @@ class QuoridorGame():
                 #if pawn2 is on y coordinate 0
                 #pawn2 wins, return true
                 return True
-        else:
-            return False
+        return False
     
     def print_board(self):
         """* You might also find implementing a `print_board` method useful to print the board to the screen. It's not required that you implement this method. """
@@ -333,7 +332,10 @@ class QuoridorGame():
         print(self._board[(0,7)], self._board[(1,7)], self._board[(2,7)], self._board[(3,7)], self._board[(4,7)], self._board[(5,7)], self._board[(6,7)], self._board[(7,7)], self._board[(8,7)])
         print(self._board[(0,8)], self._board[(1,8)], self._board[(2,8)], self._board[(3,8)], self._board[(4,8)], self._board[(5,8)], self._board[(6,8)], self._board[(7,8)], self._board[(8,8)])
 
-""" game = QuoridorGame()
+if __name__ == '__main__':
+    pass
+
+game = QuoridorGame()
 game.print_board()
 print("2, 3,1 results in: ", game.move_pawn(2, (3,1)))
 game.print_board()
@@ -354,4 +356,3 @@ game.print_board()
 print("2 tries to move to 4,0", game.move_pawn(2, (4,0)))
 game.print_board()
 print(game.is_winner(2))
- """
