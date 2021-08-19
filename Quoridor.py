@@ -186,9 +186,12 @@ class QuoridorGame():
     def is_horizontal_move(self, current_location, move_location):
         x1 = current_location[0]
         x2 = move_location[0]
-        answer = x1 - x2
-        if abs(answer) == 1:
-            return True
+        y1 = current_location[1]
+        y2 = move_location[1]
+        distance = math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+        if abs(distance) == 1:
+            if y1 == y2:
+                return True
         return False
 
     def move_pawn(self, pawn, move_coord):
