@@ -169,6 +169,28 @@ class QuoridorGame():
                             return True      
         return False
 
+    def check_jump_over_valid(self, pawn, current_location, move_location):
+        #method checks if the jump over move is allowed or not
+        if not self.is_horizontal_move(current_location, move_location):
+        #check if not horizontal move
+            if move_location == (current_location[0], current_location[1]+2):
+                #check if moving down
+                if (pawn == 1 and 2 in self._board.get((current_location[0], current_location[1]+1))) or (pawn == 2 and 1 in self._board.get((current_location[0], current_location[1]+1))):
+                    #check if player is in space above current player
+                    if 'h' not in self._board.get(move_location[0], move_location[1]-1):
+                        self.set_location_pawn(pawn, move_location)
+                        self.delete_current_location(pawn, current_location)
+                        return True
+            elif move_location == (current_location[0], current_location[1]-2):
+                #check if moving up
+                if (pawn == 1 and 2 in self._board.get((current_location[0], current_location[1]-1))) or (pawn == 2 and 1 in self._board.get((current_location[0], current_location[1]-1))):
+                    #check if player is in space above current player
+                    if 'h' not in self._board.get(move_location):
+                        self.set_location_pawn(pawn, move_location)
+                        self.delete_current_location(pawn, current_location)
+                        return True
+        return False
+
     def difference_between_coords(self, pawn, current_location, move_location):
         #method to check the difference between current location and move location
         x1 = current_location[0]
@@ -185,7 +207,15 @@ class QuoridorGame():
                     return False
                 else:
                     return "diagonal"
-            return False
+            elif distance.is_integer():
+                #check if distance greater than 1 is a whole number.
+                if not self.check_jump_over_valid(pawn, current_location, move_location):
+                    #check if jump over move allowed; if no, return False, else return jumpover
+                    return False
+                else:
+                    return "jumpover"
+            else:
+                return False
         else:
             return True
     
@@ -220,7 +250,7 @@ class QuoridorGame():
             return False
         difference = self.difference_between_coords(pawn, start_coord, move_coord)
         #check if the distance between the start_coord and the move_coord is 1
-        if difference == "diagonal":
+        if difference == "diagonal" or "jumpover":
             #if the return value is diagnol, move has been made, so update player turn
             if self._turn == 1:
                 self._turn = 2
