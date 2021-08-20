@@ -171,21 +171,28 @@ class QuoridorGame():
 
     def check_jump_over_valid(self, pawn, current_location, move_location):
         #method checks if the jump over move is allowed or not
+        current_x = current_location[0]
+        current_y = current_location[1]
+        move_x = move_location[0]
+        move_y = move_location[1]
         if not self.is_horizontal_move(current_location, move_location):
         #check if not horizontal move
-            if move_location == (current_location[0], current_location[1]+2):
+            if move_location == (current_x, current_y+2):
                 #check if moving down
-                if (pawn == 1 and 2 in self._board.get((current_location[0], current_location[1]+1))) or (pawn == 2 and 1 in self._board.get((current_location[0], current_location[1]+1))):
+                down = (current_x, current_y+1)
+                if (pawn == 1 and 2 in self._board.get(down)) or (pawn == 2 and 1 in self._board.get(down)):
                     #check if player is in space above current player
-                    if 'h' not in self._board.get(move_location[0], move_location[1]-1):
+                    down_move = (move_x, move_y-1)
+                    if not 'h' in self._board.get(down_move):
                         self.set_location_pawn(pawn, move_location)
                         self.delete_current_location(pawn, current_location)
                         return True
-            elif move_location == (current_location[0], current_location[1]-2):
+            elif move_location == (current_x, current_y-2):
                 #check if moving up
-                if (pawn == 1 and 2 in self._board.get((current_location[0], current_location[1]-1))) or (pawn == 2 and 1 in self._board.get((current_location[0], current_location[1]-1))):
+                above = (current_x, current_y-1)
+                if (pawn == 1 and 2 in self._board.get(above)) or (pawn == 2 and 1 in self._board.get(above)):
                     #check if player is in space above current player
-                    if 'h' not in self._board.get(move_location):
+                    if not 'h' in self._board.get(move_location):
                         self.set_location_pawn(pawn, move_location)
                         self.delete_current_location(pawn, current_location)
                         return True
@@ -201,6 +208,7 @@ class QuoridorGame():
         #if the distance is not 1, check for diagnol or jump move allowed, else return True
         if distance != 1:
             #check if it's a diagnol of only 1 space or not, if not return False
+            print("distance != 1")
             if distance == math.sqrt(2):
                 #if diagnol move is not allowed, return false, otherwise return diagnol
                 if not self.is_diagonal_allowed(pawn, current_location, move_location):
@@ -209,6 +217,7 @@ class QuoridorGame():
                     return "diagonal"
             elif distance.is_integer():
                 #check if distance greater than 1 is a whole number.
+                print("distance.is_integer()")
                 if not self.check_jump_over_valid(pawn, current_location, move_location):
                     #check if jump over move allowed; if no, return False, else return jumpover
                     return False
@@ -216,8 +225,7 @@ class QuoridorGame():
                     return "jumpover"
             else:
                 return False
-        else:
-            return True
+        return True
     
     def is_horizontal_move(self, current_location, move_location):
         x1 = current_location[0]
@@ -250,7 +258,7 @@ class QuoridorGame():
             return False
         difference = self.difference_between_coords(pawn, start_coord, move_coord)
         #check if the distance between the start_coord and the move_coord is 1
-        if difference == "diagonal" or "jumpover":
+        if (difference == "diagonal") or (difference == "jumpover"):
             #if the return value is diagnol, move has been made, so update player turn
             if self._turn == 1:
                 self._turn = 2
