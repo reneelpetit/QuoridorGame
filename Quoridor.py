@@ -208,7 +208,6 @@ class QuoridorGame():
         #if the distance is not 1, check for diagnol or jump move allowed, else return True
         if distance != 1:
             #check if it's a diagnol of only 1 space or not, if not return False
-            print("distance != 1")
             if distance == math.sqrt(2):
                 #if diagnol move is not allowed, return false, otherwise return diagnol
                 if not self.is_diagonal_allowed(pawn, current_location, move_location):
@@ -217,7 +216,6 @@ class QuoridorGame():
                     return "diagonal"
             elif distance.is_integer():
                 #check if distance greater than 1 is a whole number.
-                print("distance.is_integer()")
                 if not self.check_jump_over_valid(pawn, current_location, move_location):
                     #check if jump over move allowed; if no, return False, else return jumpover
                     return False
@@ -381,25 +379,3 @@ class QuoridorGame():
 
 if __name__ == '__main__':
     pass
-
-game = QuoridorGame()
-game.print_board()
-""" print("2, 3,1 results in: ", game.move_pawn(2, (3,1)))
-game.print_board()
-print("1, 3,1 diagonal results in: ", game.move_pawn(1, (3,1)))
-game.print_board()
-print("2, 4,7 results in: ", game.move_pawn(2, (4,7)))
-game.print_board()
-print("1 tries to move diagonal, ", game.move_pawn(1, (3,2)))
-print("1 places 'v' fence: ", game.place_fence(1, 'v', (1,3)))
-game.print_board()
-print("pawn1 fences, ", game._pawn1fences)
-print("2 places 'h' fence: ", game.place_fence(2, 'h', (4,4)))
-print("pawn2 fences, ", game._pawn2fences)
-game.print_board()
-print("1 tries to move off board, ", game.move_pawn(1, (1,9)))
-print("1 places fence at 4,0, ", game.place_fence(1, 'v', (4,0)))
-game.print_board()
-print("2 tries to move to 4,0", game.move_pawn(2, (4,0)))
-game.print_board()
-print(game.is_winner(2)) """

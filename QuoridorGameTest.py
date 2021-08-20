@@ -187,10 +187,26 @@ class TestQuoridor(unittest.TestCase):
         self.assertTrue(q.check_jump_over_valid(2, (3,5), (3,3)))
 
     def test_check_jump_over_condition_not_allowed_fence_player1(self):
-        pass
+        q = QuoridorGame()
+        q.delete_current_location(1, (4,0))
+        q.delete_current_location(2, (4,8))
+        q.set_location_pawn(1, (3,4))
+        q.set_location_pawn(2, (3,5))
+        q._turn = 1
+        q.place_fence(1, 'h', (3,5))
+        q._turn = 1
+        self.assertFalse(q.check_jump_over_valid(1, (3,4), (3,6)))
 
     def test_check_jump_over_condition_not_allowed_fence_player2(self):
-        pass
+        q = QuoridorGame()
+        q.delete_current_location(1, (4,0))
+        q.delete_current_location(2, (4,8))
+        q.set_location_pawn(1, (3,4))
+        q.set_location_pawn(2, (3,5))
+        q._turn = 2
+        q.place_fence(2, 'h', (3,3))
+        q._turn = 2
+        self.assertFalse(q.check_jump_over_valid(2, (3,5), (3,3)))
 
 if __name__ == '__main__':
     unittest.main()
