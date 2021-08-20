@@ -135,32 +135,38 @@ class QuoridorGame():
         #check if other pawn is above the current_location
         below_coord = (current_location[0], current_location[1] + 1)
         above_coord = (current_location[0], current_location[1] - 1)
-        below_fence_coord = (current_location[0], current_location[1] + 2)
+        """ below_fence_coord = (current_location[0], current_location[1] + 2)
+        print("below fence", below_fence_coord) """
         above_fence_coord = (current_location[0], current_location[1] - 2)
 
-        if below_coord[0] > 0 and below_coord[0] < 8 and below_coord[1] > 0 and below_coord[1] < 8:
-           #if below coord is inbounds    
+        if below_coord[0] >= 0 and below_coord[0] <= 8 and below_coord[1] >= 0 and below_coord[1] <= 8:
+            #if below coord is inbounds   
             if (pawn == 1 and 2 in self._board.get(below_coord)) or (pawn == 2 and 1 in self._board.get(below_coord)):
                 #if h 2 below our pawn's spot
-                if 'h' in self._board.get(below_fence_coord):
+                """ if below_fence_coord[0] > 0 and below_fence_coord[0] < 8 and below_fence_coord[1] > 0 and below_fence_coord[1] < 8:
+                    print("inside below_fence_coord in bounds if")
+                    #if below_fence coord is inbounds """
+                if 'h' in self._board.get(below_coord):
                     #if moving down and right or down and left, return True
-                    if move_location == (current_location[0] - 1, current_location[1] + 1) or move_location == (current_location[0] + 1, current_location[1] + 1):
+                    if (move_location == ((current_location[0] - 1, current_location[1] + 1))) or (move_location == ((current_location[0] + 1, current_location[1] + 1))):
                         #yes can move
                         self.set_location_pawn(pawn, move_location)
                         self.delete_current_location(pawn, current_location)
                         return True
         #check above
-        if above_coord[0] > 0 and above_coord[0] < 8 and above_coord[1] > 0 and above_coord[1] < 8:
+        if above_coord[0] >= 0 and above_coord[0] <= 8 and above_coord[1] >= 0 and above_coord[1] <= 8:
             #if above coord is inbounds
             if (pawn == 1 and 2 in self._board.get(above_coord)) or (pawn == 2 and 1 in self._board.get(above_coord)):
                 #if h above our pawn's spot
-                if 'h' in self._board.get(above_fence_coord):
-                    #if moving up and right or up and left, return True
-                    if move_location == (current_location[0] -1, current_location[1] - 1) or move_location == (current_location[0] + 1, current_location[1] + 1):
-                        #yes can move
-                        self.set_location_pawn(pawn, move_location)
-                        self.delete_current_location(pawn, current_location)
-                        return True      
+                if above_fence_coord[0] >= 0 and above_fence_coord[0] <= 8 and above_fence_coord[1] >= 0 and above_fence_coord[1] <= 8:
+                    #if above_fence coord is inbounds
+                    if 'h' in self._board.get(above_fence_coord):
+                        #if moving up and right or up and left, return True
+                        if (move_location == ((current_location[0] -1, current_location[1] - 1))) or (move_location == ((current_location[0] + 1, current_location[1] -1))):
+                            #yes can move
+                            self.set_location_pawn(pawn, move_location)
+                            self.delete_current_location(pawn, current_location)
+                            return True      
         return False
 
     def difference_between_coords(self, pawn, current_location, move_location):
@@ -340,7 +346,7 @@ if __name__ == '__main__':
 
 game = QuoridorGame()
 game.print_board()
-print("2, 3,1 results in: ", game.move_pawn(2, (3,1)))
+""" print("2, 3,1 results in: ", game.move_pawn(2, (3,1)))
 game.print_board()
 print("1, 3,1 diagonal results in: ", game.move_pawn(1, (3,1)))
 game.print_board()
@@ -358,4 +364,4 @@ print("1 places fence at 4,0, ", game.place_fence(1, 'v', (4,0)))
 game.print_board()
 print("2 tries to move to 4,0", game.move_pawn(2, (4,0)))
 game.print_board()
-print(game.is_winner(2))
+print(game.is_winner(2)) """
