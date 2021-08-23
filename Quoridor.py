@@ -378,4 +378,4 @@ class QuoridorGame():
         print(self._board[(0,8)], self._board[(1,8)], self._board[(2,8)], self._board[(3,8)], self._board[(4,8)], self._board[(5,8)], self._board[(6,8)], self._board[(7,8)], self._board[(8,8)])
 
 if __name__ == '__main__':
-    print("hello")
+    pass
