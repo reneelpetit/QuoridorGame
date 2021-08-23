@@ -2,6 +2,44 @@
 #Date: 8/3/21
 #Description: Program to play Quoridor with 2 players who have 10 fences each.
 import math
+import functools
+
+def print_board(func):
+    """* You might also find implementing a `print_board` method useful to print the board to the screen. It's not required that you implement this method. """
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        result = func(*args, **kwargs)
+        self = args[0]
+        if result:
+            print("0,0", self._board[(0, 0)], "1,0", self._board[(1, 0)], "2,0", self._board[(2, 0)], "3,0",
+                  self._board[(3, 0)], "4,0", self._board[(4, 0)], "5,0", self._board[(5, 0)], "6,0",
+                  self._board[(6, 0)], "7,0", self._board[(7, 0)], "8,0", self._board[(8, 0)])
+            print("0,1", self._board[(0, 1)], "1,1", self._board[(1, 1)], "2,1", self._board[(2, 1)], "3,1",
+                  self._board[(3, 1)], "4,1", self._board[(4, 1)], "5,1", self._board[(5, 1)], "6,1",
+                  self._board[(6, 1)], "7,1", self._board[(7, 1)], "8,1", self._board[(8, 1)])
+            print("0,2", self._board[(0, 2)], "1,2", self._board[(1, 2)], "2,2", self._board[(2, 2)], "3,2",
+                  self._board[(3, 2)], "4,2", self._board[(4, 2)], "5,2", self._board[(5, 2)], "6,2",
+                  self._board[(6, 2)], "7,2", self._board[(7, 2)], "8,2", self._board[(8, 2)])
+            print("0,3", self._board[(0, 3)], "1,3", self._board[(1, 3)], "2,3", self._board[(2, 3)], "3,3",
+                  self._board[(3, 3)], "4,3", self._board[(4, 3)], "5,3", self._board[(5, 3)], "6,3",
+                  self._board[(6, 3)], "7,3", self._board[(7, 3)], "8,3", self._board[(8, 3)])
+            print("0,4", self._board[(0, 4)], "1,4", self._board[(1, 4)], "2,4", self._board[(2, 4)], "3,4",
+                  self._board[(3, 4)], "4,4", self._board[(4, 4)], "5,4", self._board[(5, 4)], "6,4",
+                  self._board[(6, 4)], "7,4", self._board[(7, 4)], "8,4", self._board[(8, 4)])
+            print("0,5", self._board[(0, 5)], "1,5", self._board[(1, 5)], "2,5", self._board[(2, 5)], "3,5",
+                  self._board[(3, 5)], "4,5", self._board[(4, 5)], "5,5", self._board[(5, 5)], "6,5",
+                  self._board[(6, 5)], "7,5", self._board[(7, 5)], "8,5", self._board[(8, 5)])
+            print("0,6", self._board[(0, 6)], "1,6", self._board[(1, 6)], "2,6", self._board[(2, 6)], "3,6",
+                  self._board[(3, 6)], "4,6", self._board[(4, 6)], "5,6", self._board[(5, 6)], "6,6",
+                  self._board[(6, 6)], "7,6", self._board[(7, 6)], "8,6", self._board[(8, 6)])
+            print("0,7", self._board[(0, 7)], "1,7", self._board[(1, 7)], "2,7", self._board[(2, 7)], "3,7",
+                  self._board[(3, 7)], "4,7", self._board[(4, 7)], "5,7", self._board[(5, 7)], "6,7",
+                  self._board[(6, 7)], "7,7", self._board[(7, 7)], "8,7", self._board[(8, 7)])
+            print("0,8", self._board[(0, 8)], "1,8", self._board[(1, 8)], "2,8", self._board[(2, 8)], "3,8",
+                  self._board[(3, 8)], "4,8", self._board[(4, 8)], "5,8", self._board[(5, 8)], "6,8",
+                  self._board[(6, 8)], "7,8", self._board[(7, 8)], "8,8", self._board[(8, 8)])
+        return result
+    return wrapper
 
 class QuoridorGame():
     def __init__(self):
@@ -135,38 +173,34 @@ class QuoridorGame():
         #check if other pawn is above the current_location
         below_coord = (current_location[0], current_location[1] + 1)
         above_coord = (current_location[0], current_location[1] - 1)
-        """ below_fence_coord = (current_location[0], current_location[1] + 2)
-        print("below fence", below_fence_coord) """
-        above_fence_coord = (current_location[0], current_location[1] - 2)
-
+        below_fence_coord = (current_location[0], current_location[1] + 2)
+        """above_fence_coord = (current_location[0], current_location[1] - 2)"""
+        #check below
         if below_coord[0] >= 0 and below_coord[0] <= 8 and below_coord[1] >= 0 and below_coord[1] <= 8:
             #if below coord is inbounds   
             if (pawn == 1 and 2 in self._board.get(below_coord)) or (pawn == 2 and 1 in self._board.get(below_coord)):
                 #if h 2 below our pawn's spot
-                """ if below_fence_coord[0] > 0 and below_fence_coord[0] < 8 and below_fence_coord[1] > 0 and below_fence_coord[1] < 8:
-                    print("inside below_fence_coord in bounds if")
-                    #if below_fence coord is inbounds """
-                if 'h' in self._board.get(below_coord):
-                    #if moving down and right or down and left, return True
-                    if (move_location == ((current_location[0] - 1, current_location[1] + 1))) or (move_location == ((current_location[0] + 1, current_location[1] + 1))):
-                        #yes can move
-                        self.set_location_pawn(pawn, move_location)
-                        self.delete_current_location(pawn, current_location)
-                        return True
+                if below_fence_coord[0] >= 0 and below_fence_coord[0] <= 8 and below_fence_coord[1] >= 0 and below_fence_coord[1] <= 8:
+                #if above_fence coord is inbounds
+                    if 'h' in self._board.get(below_fence_coord):
+                        #if moving down and right or down and left, return True
+                        if (move_location == ((current_location[0] - 1, current_location[1] + 1))) or (move_location == ((current_location[0] + 1, current_location[1] + 1))):
+                            #yes can move
+                            self.set_location_pawn(pawn, move_location)
+                            self.delete_current_location(pawn, current_location)
+                            return True
         #check above
         if above_coord[0] >= 0 and above_coord[0] <= 8 and above_coord[1] >= 0 and above_coord[1] <= 8:
             #if above coord is inbounds
             if (pawn == 1 and 2 in self._board.get(above_coord)) or (pawn == 2 and 1 in self._board.get(above_coord)):
                 #if h above our pawn's spot
-                if above_fence_coord[0] >= 0 and above_fence_coord[0] <= 8 and above_fence_coord[1] >= 0 and above_fence_coord[1] <= 8:
-                    #if above_fence coord is inbounds
-                    if 'h' in self._board.get(above_fence_coord):
-                        #if moving up and right or up and left, return True
-                        if (move_location == ((current_location[0] -1, current_location[1] - 1))) or (move_location == ((current_location[0] + 1, current_location[1] -1))):
-                            #yes can move
-                            self.set_location_pawn(pawn, move_location)
-                            self.delete_current_location(pawn, current_location)
-                            return True      
+                if 'h' in self._board.get(above_coord):
+                    #if moving up and right or up and left, return True
+                    if (move_location == ((current_location[0] -1, current_location[1] - 1))) or (move_location == ((current_location[0] + 1, current_location[1] -1))):
+                        #yes can move
+                        self.set_location_pawn(pawn, move_location)
+                        self.delete_current_location(pawn, current_location)
+                        return True
         return False
 
     def check_jump_over_valid(self, pawn, current_location, move_location):
@@ -236,11 +270,13 @@ class QuoridorGame():
                 return True
         return False
 
+    @print_board
     def move_pawn(self, pawn, move_coord):
         """* `move_pawn` method takes following two parameters in order: an integer that represents which player (1 or 2) is making the move and a tuple with the coordinates of where the pawn is going to be moved to.
             - if the move is forbidden by the rule or blocked by the fence, return `False`
             - if the move was successful or if the move makes the player win, return `True`
             - if the game has been already won, return `False`"""
+        print("move_coord ", move_coord, "pawn ", pawn)
         #check if it's the player's turn
         if self._turn != pawn:
             return False
@@ -300,7 +336,7 @@ class QuoridorGame():
                 else:
                     self._turn = 1
                 return True
-
+    @print_board
     def place_fence(self, pawn, direction_of_fence, coord_to_place_fence):
         """* `place_fence` method takes following parameters in order: an integer that represents which player (1 or 2) is making the move, a letter indicating whether it is vertical (v) or horizontal (h) fence, a tuple of integers that represents the position on which the fence is to be placed.   
             - if player has no fence left, or if the fence is out of the boundaries of the board, or if there is already a fence there and the new fence will overlap or intersect with the existing fence, return `False`. 
@@ -309,6 +345,7 @@ class QuoridorGame():
             - If the game has been already won, return `False`"""
         #check that no one has won by calling is_winner
         #needs to check if player has fences left and if yes, how many
+        print("pawn", pawn, "direction", direction_of_fence, "coord", coord_to_place_fence)
         if pawn == 1:
             #if pawn is 1
             if self._pawn1fences <= 0:
@@ -364,18 +401,6 @@ class QuoridorGame():
                 #pawn2 wins, return true
                 return True
         return False
-    
-    def print_board(self):
-        """* You might also find implementing a `print_board` method useful to print the board to the screen. It's not required that you implement this method. """
-        print(self._board[(0,0)], self._board[(1,0)], self._board[(2,0)], self._board[(3,0)], self._board[(4,0)], self._board[(5,0)], self._board[(6,0)], self._board[(7,0)], self._board[(8,0)])
-        print(self._board[(0,1)], self._board[(1,1)], self._board[(2,1)], self._board[(3,1)], self._board[(4,1)], self._board[(5,1)], self._board[(6,1)], self._board[(7,1)], self._board[(8,1)])
-        print(self._board[(0,2)], self._board[(1,2)], self._board[(2,2)], self._board[(3,2)], self._board[(4,2)], self._board[(5,2)], self._board[(6,2)], self._board[(7,2)], self._board[(8,2)])
-        print(self._board[(0,3)], self._board[(1,3)], self._board[(2,3)], self._board[(3,3)], self._board[(4,3)], self._board[(5,3)], self._board[(6,3)], self._board[(7,3)], self._board[(8,3)])
-        print(self._board[(0,4)], self._board[(1,4)], self._board[(2,4)], self._board[(3,4)], self._board[(4,4)], self._board[(5,4)], self._board[(6,4)], self._board[(7,4)], self._board[(8,4)])
-        print(self._board[(0,5)], self._board[(1,5)], self._board[(2,5)], self._board[(3,5)], self._board[(4,5)], self._board[(5,5)], self._board[(6,5)], self._board[(7,5)], self._board[(8,5)])
-        print(self._board[(0,6)], self._board[(1,6)], self._board[(2,6)], self._board[(3,6)], self._board[(4,6)], self._board[(5,6)], self._board[(6,6)], self._board[(7,6)], self._board[(8,6)])
-        print(self._board[(0,7)], self._board[(1,7)], self._board[(2,7)], self._board[(3,7)], self._board[(4,7)], self._board[(5,7)], self._board[(6,7)], self._board[(7,7)], self._board[(8,7)])
-        print(self._board[(0,8)], self._board[(1,8)], self._board[(2,8)], self._board[(3,8)], self._board[(4,8)], self._board[(5,8)], self._board[(6,8)], self._board[(7,8)], self._board[(8,8)])
 
 if __name__ == '__main__':
     pass
