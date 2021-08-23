@@ -217,7 +217,9 @@ class QuoridorGame():
                 if (pawn == 1 and 2 in self._board.get(down)) or (pawn == 2 and 1 in self._board.get(down)):
                     #check if player is in space above current player
                     down_move = (move_x, move_y-1)
-                    if not 'h' in self._board.get(down_move):
+                    if 'h' in self._board.get(down_move):
+                        return False
+                    else:
                         self.set_location_pawn(pawn, move_location)
                         self.delete_current_location(pawn, current_location)
                         return True
@@ -226,7 +228,9 @@ class QuoridorGame():
                 above = (current_x, current_y-1)
                 if (pawn == 1 and 2 in self._board.get(above)) or (pawn == 2 and 1 in self._board.get(above)):
                     #check if player is in space above current player
-                    if not 'h' in self._board.get(move_location):
+                    if 'h' in self._board.get(above):
+                        return False
+                    else:
                         self.set_location_pawn(pawn, move_location)
                         self.delete_current_location(pawn, current_location)
                         return True
@@ -323,19 +327,37 @@ class QuoridorGame():
                     self._turn = 1
                 return True
         else:
-            if 'h' in self._board.get(move_coord):
-                #if there is a horizontal fence
-                return False
-            else:
-                #set the new location and return True
-                self.set_location_pawn(pawn, move_coord)
-                self.delete_current_location(pawn, start_coord)
-                #update player turn
-                if self._turn == 1:
-                    self._turn = 2
+            if move_coord == (start_coord[0], start_coord[1]-1):
+                #check if moving up
+                if 'h' in self._board.get(start_coord):
+                    # if there is a horizontal fence
+                    return False
                 else:
-                    self._turn = 1
-                return True
+                    # set the new location and return True
+                    self.set_location_pawn(pawn, move_coord)
+                    self.delete_current_location(pawn, start_coord)
+                    # update player turn
+                    if self._turn == 1:
+                        self._turn = 2
+                    else:
+                        self._turn = 1
+                    return True
+            elif move_coord == (start_coord[0], start_coord[1]+1):
+                #check if moving down
+                if 'h' in self._board.get(move_coord):
+                    # if there is a horizontal fence
+                    return False
+                else:
+                    # set the new location and return True
+                    self.set_location_pawn(pawn, move_coord)
+                    self.delete_current_location(pawn, start_coord)
+                    # update player turn
+                    if self._turn == 1:
+                        self._turn = 2
+                    else:
+                        self._turn = 1
+                    return True
+
     @print_board
     def place_fence(self, pawn, direction_of_fence, coord_to_place_fence):
         """* `place_fence` method takes following parameters in order: an integer that represents which player (1 or 2) is making the move, a letter indicating whether it is vertical (v) or horizontal (h) fence, a tuple of integers that represents the position on which the fence is to be placed.   
