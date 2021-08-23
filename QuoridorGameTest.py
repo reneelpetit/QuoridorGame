@@ -122,7 +122,7 @@ class TestQuoridor(unittest.TestCase):
         q = QuoridorGame()
         q.delete_current_location(1, (4,0))
         q.delete_current_location(2, (4,8))
-        q.set_location_fence('h', (1,1))
+        q.set_location_fence('h', (1,2))
         q.set_location_pawn(1, (1,2))
         q.set_location_pawn(2, (1,3))
         q._turn = 2
@@ -132,7 +132,7 @@ class TestQuoridor(unittest.TestCase):
         q = QuoridorGame()
         q.delete_current_location(1, (4,0))
         q.delete_current_location(2, (4,8))
-        q.set_location_fence('h', (1,3))
+        q.set_location_fence('h', (1,4))
         q.set_location_pawn(1, (1,2))
         q.set_location_pawn(2, (1,3))
         q._turn = 1
@@ -142,7 +142,7 @@ class TestQuoridor(unittest.TestCase):
         q = QuoridorGame()
         q.delete_current_location(1, (4,0))
         q.delete_current_location(2, (4,8))
-        q.set_location_fence('h', (1,3))
+        q.set_location_fence('h', (1,4))
         q.set_location_pawn(1, (1,2))
         q.set_location_pawn(2, (1,3))
         q._turn = 1
@@ -152,7 +152,7 @@ class TestQuoridor(unittest.TestCase):
         q = QuoridorGame()
         q.delete_current_location(1, (4,0))
         q.delete_current_location(2, (4,8))
-        q.set_location_fence('h', (1,1))
+        q.set_location_fence('h', (1,2))
         q.set_location_pawn(1, (1,2))
         q.set_location_pawn(2, (1,3))
         q._turn = 2
@@ -162,7 +162,7 @@ class TestQuoridor(unittest.TestCase):
         q = QuoridorGame()
         q.delete_current_location(1, (4,0))
         q.delete_current_location(2, (4,8))
-        q.set_location_fence('h', (0,0))
+        q.set_location_fence('h', (0,1))
         q.set_location_pawn(1, (0,1))
         q.set_location_pawn(2, (0,2))
         q._turn = 2
@@ -204,7 +204,7 @@ class TestQuoridor(unittest.TestCase):
         q.set_location_pawn(1, (3,4))
         q.set_location_pawn(2, (3,5))
         q._turn = 2
-        q.place_fence(2, 'h', (3,3))
+        q.place_fence(2, 'h', (3,4))
         q._turn = 2
         self.assertFalse(q.check_jump_over_valid(2, (3,5), (3,3)))
 
